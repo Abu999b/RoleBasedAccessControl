@@ -1,19 +1,22 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
+const authRoutes = require('./api/auth');
+const userRoutes = require('./api/user');
 
+// Load environment variables
 dotenv.config();
+
+// Connect to database
 connectDB();
 
+// Initialize the Express app
 const app = express();
-app.use(express.json());
+app.use(express.json()); // to parse JSON request bodies
 
+// API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Export the app as a Vercel function
+module.exports = app;
