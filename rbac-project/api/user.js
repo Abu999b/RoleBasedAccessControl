@@ -1,9 +1,10 @@
 const express = require('express');
-const { createUser } = require('../controllers/userController');
-const authMiddleware = require('../middleware/authMiddleware');
-const roleMiddleware = require('../middleware/roleMiddleware');
 const router = express.Router();
+const { getUserProfile, updateUserProfile } = require('../controllers/userController');
+const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 
-router.post('/create', authMiddleware, roleMiddleware(['admin']), createUser);
+// Protect routes with auth and role-based access
+router.get('/profile', authMiddleware, getUserProfile);
+router.put('/profile', authMiddleware, roleMiddleware('user'), updateUserProfile);
 
 module.exports = router;
